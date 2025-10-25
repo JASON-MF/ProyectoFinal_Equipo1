@@ -3,9 +3,10 @@ from django.contrib.auth.models import User
 
 class Usuario(models.Model):
     id_usuario = models.AutoField(primary_key=True)
+    auth_user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     username = models.CharField(max_length=150, unique=True)
     email = models.EmailField(max_length=254, unique=True)
-    password = models.CharField(max_length=128)
+    password = models.CharField(max_length=128, blank=True)
 
     def __str__(self):
         return self.username
@@ -13,6 +14,7 @@ class Usuario(models.Model):
 class Especialidad(models.Model):
     id_especialidad = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=100, unique=True)
+    descripcion = models.TextField(blank=True)
 
     def __str__(self):
         return self.nombre
@@ -21,6 +23,8 @@ class CentroMedico(models.Model):
     id_centro = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=150)
     direccion = models.CharField(max_length=250, blank=True)
+    telefono = models.CharField(max_length=20, blank=True)
+    correo = models.EmailField(blank=True)
 
     def __str__(self):
         return self.nombre
@@ -54,6 +58,12 @@ class Cita(models.Model):
     fecha = models.DateField()
     hora = models.TimeField()
     motivo = models.TextField(blank=True)
+    ESTADOS = [
+        ('pendiente', 'Pendiente'),
+        ('confirmada', 'Confirmada'),
+        ('cancelada', 'Cancelada'),
+    ]
+    estado = models.CharField(max_length=20, choices=ESTADOS, default='pendiente')
     creado_en = models.DateTimeField(auto_now_add=True)
 
     class Meta:
