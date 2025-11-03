@@ -1,0 +1,20 @@
+{% extends "core/base.html" %}
+{% block title %}{% if object %}Editar cita{% else %}Nueva cita{% endif %}{% endblock %}
+{% block content %}
+<h2>{% if object %}Editar{% else %}Nueva{% endif %} Cita</h2>
+
+<form method="post" novalidate>
+  {% csrf_token %}
+  {{ form.non_field_errors }}
+  {% for field in form %}
+    <div class="mb-3">
+      <label class="form-label">{{ field.label }}</label>
+      {{ field }}
+      {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
+      {% for err in field.errors %}<div class="text-danger small">{{ err }}</div>{% endfor %}
+    </div>
+  {% endfor %}
+  <button class="btn btn-success" type="submit">Guardar</button>
+  <a class="btn btn-secondary" href="{% url 'core:cita_list' %}">Cancelar</a>
+</form>
+{% endblock %}

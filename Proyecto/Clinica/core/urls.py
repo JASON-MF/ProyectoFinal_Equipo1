@@ -20,4 +20,7 @@ urlpatterns = [
     path('citas/nuevo/', views.CitaCreateView.as_view(), name='cita_create'),
     path('citas/<int:pk>/editar/', views.CitaUpdateView.as_view(), name='cita_update'),
     path('citas/<int:pk>/eliminar/', views.CitaDeleteView.as_view(), name='cita_delete'),
+
+    #  Nueva ruta para registro de usuarios
+    path('registro/', views.registro_view, name='registro'),
 ]

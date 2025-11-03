@@ -1,29 +1,28 @@
-Este sistema web desarrollado con Django permite gestionar pacientes, médicos y citas de forma eficiente.
-Actualmente se ha implementado:
+#  Sistema de Citas Médicas - Clínica
 
-Estructura base del proyecto con vistas genéricas (List, Create, Update, Delete) para cada modelo.
+Este proyecto implementa un sistema web para la gestión de citas médicas, desarrollado con Django y Bootstrap 5. Incluye autenticación de usuarios, control de acceso y diseño responsivo.
 
-Navegación funcional entre secciones: Pacientes, Médicos y Citas.
+---
 
-Plantillas organizadas con herencia desde base.html y diseño responsivo usando Bootstrap.
+##  Módulo de Autenticación
 
-Conexión estable con base de datos SQL Server.
+- Registro de nuevos usuarios con formulario personalizado
+- Inicio y cierre de sesión
+- Redirección automática al login tras cerrar sesión
+- Vistas protegidas con `@login_required`
 
-Archivos estáticos configurados correctamente (CSS/JS locales y CDN).
+---
 
-Proyecto listo para despliegue y versionado en GitHub, excluyendo el entorno virtual.
+##  Diseño con Bootstrap
 
+- Formularios limpios y centrados
+- Estilo profesional con `card`, `btn`, `form-label`, etc.
+- Navegación dinámica según estado de sesión
+- Plantilla base (`base.html`) con navbar adaptable
 
-Equipo 1
+---
 
-Nombre: Usuario de GitHub:
+##  Control de Acceso
 
-  1. Jonathan Xavier Salinas Martinez Xavier-mrtz
-  2. Jason Rolando Melara Fuentes  
-  3. Amy Alejandra Jarquin Escalante
-
-Usuario de GitHub:
-
-  1. Xavier-mrtz
-  2. JASON-MF
-  3. je0669032025-blip
+- Vistas internas protegidas para usuarios autenticados
+- Redirección automática al login si no hay sesión activa
