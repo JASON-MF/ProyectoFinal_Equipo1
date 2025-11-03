@@ -2,7 +2,7 @@
 
 Este proyecto implementa un sistema web para la gestión de citas médicas, desarrollado con Django y Bootstrap 5. Incluye autenticación de usuarios, control de acceso y diseño responsivo.
 
----
+
 
 ##  Módulo de Autenticación
 
@@ -11,7 +11,7 @@ Este proyecto implementa un sistema web para la gestión de citas médicas, desa
 - Redirección automática al login tras cerrar sesión
 - Vistas protegidas con `@login_required`
 
----
+
 
 ##  Diseño con Bootstrap
 
@@ -20,7 +20,7 @@ Este proyecto implementa un sistema web para la gestión de citas médicas, desa
 - Navegación dinámica según estado de sesión
 - Plantilla base (`base.html`) con navbar adaptable
 
----
+
 
 ##  Control de Acceso
 
