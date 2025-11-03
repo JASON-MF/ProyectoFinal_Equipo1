@@ -1,0 +1,48 @@
+{% extends 'core/base.html' %}
+
+{% block title %}
+Iniciar sesión
+{% endblock %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center py-5">
+  <div class="card shadow p-4" style="max-width: 400px; width: 100%;">
+    <h3 class="text-center mb-4">Iniciar Sesión</h3>
+
+    <form method="post" novalidate>
+      {% csrf_token %}
+
+      <div class="mb-3">
+        <label for="{{ form.username.id_for_label }}" class="form-label">Usuario:</label>
+        <div>
+          {{ form.username }}
+        </div>
+        {% if form.username.errors %}
+          <div class="text-danger small">{{ form.username.errors }}</div>
+        {% endif %}
+      </div>
+
+      <div class="mb-3">
+        <label for="{{ form.password.id_for_label }}" class="form-label">Contraseña:</label>
+        <div>
+          {{ form.password }}
+        </div>
+        {% if form.password.errors %}
+          <div class="text-danger small">{{ form.password.errors }}</div>
+        {% endif %}
+      </div>
+
+      <div class="d-flex justify-content-center mt-3">
+        <button type="submit" class="btn btn-primary">Ingresar</button>
+      </div>
+    </form>
+
+    <!-- Enlace de registro debajo -->
+    <div class="text-center mt-4">
+      <p class="mb-0">¿No tienes cuenta?
+        <a href="{% url 'registro' %}">Regístrate aquí</a>
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}
