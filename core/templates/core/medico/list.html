@@ -1,0 +1,39 @@
+{% extends "core/base.html" %}
+{% block title %}Médicos{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2 class="mb-0">Médicos</h2>
+  <a href="{% url 'core:medico_create' %}" class="btn btn-primary">Nuevo médico</a>
+</div>
+
+{% if medicos %}
+  <table class="table table-bordered table-hover">
+    <thead class="table-light">
+      <tr>
+        <th>Nombre</th>
+        <th>Teléfono</th>
+        <th>Especialidad</th>
+        <th>Centro</th>
+        <th class="text-center">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for medico in medicos %}
+        <tr>
+          <td>{{ medico.nombre }}</td>
+          <td>{{ medico.telefono }}</td>
+          <td>{{ medico.id_especialidad }}</td>
+          <td>{{ medico.id_centro }}</td>
+          <td class="text-center">
+            <a href="{% url 'core:medico_update' medico.pk %}" class="btn btn-sm btn-warning me-1">Editar</a>
+            <a href="{% url 'core:medico_delete' medico.pk %}" class="btn btn-sm btn-danger">Eliminar</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+  <div class="alert alert-info">No hay médicos registrados.</div>
+{% endif %}
+{% endblock %}
