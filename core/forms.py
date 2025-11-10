@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
 from .models import Paciente, Medico, Cita, Usuario
 
 # Formulario para Paciente
@@ -41,31 +41,18 @@ class CitaForm(forms.ModelForm):
             'estado': forms.Select(attrs={'class': 'form-control'}),
         }
 
-# Formulario de Registro básico
-class RegistroForm(UserCreationForm):
-    email = forms.EmailField(required=True, widget=forms.EmailInput(attrs={'class': 'form-control'}))
-
-    class Meta:
-        model = User
-        fields = ['username', 'email', 'password1', 'password2']
-        widgets = {
-            'username': forms.TextInput(attrs={'class': 'form-control'}),
-            'password1': forms.PasswordInput(attrs={'class': 'form-control'}),
-            'password2': forms.PasswordInput(attrs={'class': 'form-control'}),
-        }
-
-# Formulario personalizado de registro con perfil extendido
+# Formulario de Registro con modelo Usuario personalizado
 class RegistroUsuarioForm(UserCreationForm):
     first_name = forms.CharField(label="Nombre", widget=forms.TextInput(attrs={'class': 'form-control'}))
     last_name = forms.CharField(label="Apellido", widget=forms.TextInput(attrs={'class': 'form-control'}))
     email = forms.EmailField(label="Correo Electrónico", widget=forms.EmailInput(attrs={'class': 'form-control'}))
     direccion = forms.CharField(label="Dirección", required=False, widget=forms.TextInput(attrs={'class': 'form-control'}))
-    edad = forms.IntegerField(label="Edad", required=False, min_value=0, widget=forms.NumberInput(attrs={'class': 'form-control'}))
+    fecha_nacimiento = forms.DateField(label="Fecha de nacimiento", required=False, widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}))
     telefono = forms.CharField(label="Teléfono", required=False, widget=forms.TextInput(attrs={'class': 'form-control'}))
 
     class Meta:
-        model = User
-        fields = ["username", "first_name", "last_name", "email", "password1", "password2"]
+        model = Usuario
+        fields = ["username", "first_name", "last_name", "email", "password1", "password2", "direccion", "fecha_nacimiento", "telefono"]
         widgets = {
             "username": forms.TextInput(attrs={'class': 'form-control'}),
             "password1": forms.PasswordInput(attrs={'class': 'form-control'}),
@@ -77,15 +64,12 @@ class RegistroUsuarioForm(UserCreationForm):
         user.first_name = self.cleaned_data['first_name']
         user.last_name = self.cleaned_data['last_name']
         user.email = self.cleaned_data['email']
+        user.direccion = self.cleaned_data.get('direccion')
+        user.fecha_nacimiento = self.cleaned_data.get('fecha_nacimiento')
+        user.telefono = self.cleaned_data.get('telefono')
 
         if commit:
             user.save()
-            Usuario.objects.create(
-                auth_user=user,
-                direccion=self.cleaned_data.get('direccion'),
-                edad=self.cleaned_data.get('edad'),
-                telefono=self.cleaned_data.get('telefono')
-            )
             grupo_clientes = Group.objects.filter(name="Clientes").first()
             if grupo_clientes:
                 user.groups.add(grupo_clientes)

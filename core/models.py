@@ -1,25 +1,16 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 
-
-
-
-class Usuario(models.Model):
-    id_usuario = models.AutoField(primary_key=True)
-    auth_user = models.OneToOneField(User, on_delete=models.CASCADE)
-    
-    # Campos adicionales del perfil
+# Modelo de Usuario personalizado
+class Usuario(AbstractUser):
     direccion = models.CharField(max_length=255, blank=True, null=True)
-    edad = models.PositiveIntegerField(blank=True, null=True)
-    telefono = models.CharField(max_length=20, blank=True, null=True)
+    fecha_nacimiento = models.DateField(blank=True, null=True)
 
     def __str__(self):
-        return self.auth_user.username
+        return self.username
 
 
 # Modelo de Especialidad médica
-
-
 class Especialidad(models.Model):
     id_especialidad = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=100, unique=True)
@@ -30,8 +21,6 @@ class Especialidad(models.Model):
 
 
 # Modelo de Centro Médico
-
-
 class CentroMedico(models.Model):
     id_centro = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=150)
@@ -44,8 +33,6 @@ class CentroMedico(models.Model):
 
 
 # Modelo de Paciente
-
-
 class Paciente(models.Model):
     id_paciente = models.AutoField(primary_key=True)
     id_usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, null=True, blank=True)
@@ -59,8 +46,6 @@ class Paciente(models.Model):
 
 
 # Modelo de Médico
-
-
 class Medico(models.Model):
     id_medico = models.AutoField(primary_key=True)
     id_usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, null=True, blank=True)
@@ -74,8 +59,6 @@ class Medico(models.Model):
 
 
 # Modelo de Cita médica
-
-
 class Cita(models.Model):
     id_cita = models.AutoField(primary_key=True)
     id_paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE, related_name='citas')

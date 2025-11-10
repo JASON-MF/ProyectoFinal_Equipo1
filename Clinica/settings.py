@@ -137,6 +137,9 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# ✅ Modelo de usuario personalizado
+AUTH_USER_MODEL = 'core.Usuario'
+
 
 # Configuración de rutas de autenticación
 

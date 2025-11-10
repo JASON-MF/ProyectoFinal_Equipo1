@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect
 from .models import Paciente, Medico, Cita, Usuario
 from .forms import PacienteForm, MedicoForm, CitaForm, RegistroUsuarioForm
 
+# Vista de registro
 def registro_view(request):
     if request.method == 'POST':
         form = RegistroUsuarioForm(request.POST)
@@ -16,6 +17,7 @@ def registro_view(request):
         form = RegistroUsuarioForm()
     return render(request, 'core/access/registro.html', {'form': form})
 
+# Decorador para vistas protegidas
 decoradores_login = [login_required]
 
 # Paciente
@@ -33,12 +35,8 @@ class PacienteCreateView(CreateView):
     success_url = reverse_lazy('core:paciente_list')
 
     def form_valid(self, form):
-        try:
-            form.instance.id_usuario = Usuario.objects.get(auth_user=self.request.user)
-            return super().form_valid(form)
-        except Usuario.DoesNotExist:
-            form.add_error(None, "Tu perfil de usuario no está creado.")
-            return self.form_invalid(form)
+        form.instance.id_usuario = self.request.user
+        return super().form_valid(form)
 
 @method_decorator(decoradores_login, name='dispatch')
 class PacienteUpdateView(UpdateView):
@@ -68,12 +66,8 @@ class MedicoCreateView(CreateView):
     success_url = reverse_lazy('core:medico_list')
 
     def form_valid(self, form):
-        try:
-            form.instance.id_usuario = Usuario.objects.get(auth_user=self.request.user)
-            return super().form_valid(form)
-        except Usuario.DoesNotExist:
-            form.add_error(None, "Tu perfil de usuario no está creado.")
-            return self.form_invalid(form)
+        form.instance.id_usuario = self.request.user
+        return super().form_valid(form)
 
 @method_decorator(decoradores_login, name='dispatch')
 class MedicoUpdateView(UpdateView):
@@ -103,12 +97,7 @@ class CitaCreateView(CreateView):
     success_url = reverse_lazy('core:cita_list')
 
     def form_valid(self, form):
-        try:
-            form.instance.id_usuario = Usuario.objects.get(auth_user=self.request.user)
-            return super().form_valid(form)
-        except Usuario.DoesNotExist:
-            form.add_error(None, "Tu perfil de usuario no está creado.")
-            return self.form_invalid(form)
+        return super().form_valid(form)
 
 @method_decorator(decoradores_login, name='dispatch')
 class CitaUpdateView(UpdateView):
