@@ -11,9 +11,21 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv
+import dj_database_url  # ✅ agregado para usar DATABASE_URL
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# ✅ Seguridad y entorno
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-&95orqoay4zsa!5+x@3#uif8!w0l&gp8*$e=tt=ltd$*g(0(f8')
+DEBUG = os.getenv('DEBUG', 'True') == 'True'
+ALLOWED_HOSTS = [os.getenv('RENDER_EXTERNAL_HOSTNAME', 'localhost')]
+
+
 
 STATIC_URL = '/static/'
 
@@ -21,7 +33,8 @@ STATICFILES_DIRS = [
     BASE_DIR / 'static',  
 ]
 
-STATIC_ROOT = BASE_DIR / 'staticfiles'  
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -49,13 +62,13 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'core.middleware.NoCacheMiddleware',
 ]
 
 ROOT_URLCONF = 'Clinica.urls'
@@ -83,17 +96,14 @@ WSGI_APPLICATION = 'Clinica.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'mssql',
-        'NAME': 'ClinicaBD',
-        'HOST': 'JASON',
-        'PORT': '1433',
-        'OPTIONS': {
-            'driver': 'ODBC Driver 17 for SQL Server',
-            'trusted_connection': 'yes'
-        }
+        'ENGINE': os.getenv('DB_ENGINE'),
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT'),
     }
 }
-
 
 
 # Password validation
